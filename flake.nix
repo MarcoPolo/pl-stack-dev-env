@@ -27,40 +27,26 @@
             pkgs.nodejs
             pkgs.yarn
             pkgs.ipfs
+            self.packages.${system}.go-car
           ];
           # If the project requires openssl, uncomment this
           # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
         };
 
-        # packages.go-car =
-        #   pkgs.buildGoModule rec {
-        #     pname = "go-car";
-        #     version = "2.1.1";
+        packages.go-car =
+          pkgs.buildGoModule rec {
+            pname = "go-car";
+            version = "2.1.1";
 
-        #     src = pkgs.fetchFromGithub {
-        #       owner = "ipld";
-        #       repo = "go-car";
-        #       rev = "v${version}";
-        #       sha256 = pkgs.lib.fakeSha256;
-        #     };
+            src = pkgs.fetchFromGitHub
+              {
+                owner = "ipld";
+                repo = "go-car";
+                rev = "v${version}";
+                sha256 = "sha256-fC/+MjujbUunU7pOTMZU097hqSLmfDBAflXWFZBBQks=";
+              } + /cmd;
 
-        #     vendorSha256 = pkgs.lib.fakeSha256;
-
-        #     # buildPhase = "
-        #     #     GOOS=js GOARCH=wasm go build -o main.wasm
-        #     #   ";
-        #     # installPhase = "
-        #     #     cp -r www $out
-        #     #     cp main.wasm $out/main.wasm
-        #     #   ";
-
-        #     meta = with pkgs.lib;
-        #       {
-        #         description = "go-car";
-        #         homepage = "https://github.com/ipld/go-car";
-        #         license = licenses.mit;
-        #         platforms = platforms.linux ++ platforms.darwin;
-        #       };
-        #   };
+            vendorSha256 = "sha256-OITJ5NqnaO+deDYa12L51xET6Gr/aDoYhojZVjzQuP8=";
+          };
       });
 }
