@@ -6,6 +6,7 @@
   description = "PL dev environment";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.rust-overlay.url = "github:oxalica/rust-overlay";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
 
   outputs = { self, nixpkgs, flake-utils, rust-overlay }:
     flake-utils.lib.eachDefaultSystem (system:
@@ -19,7 +20,7 @@
       {
         devShell = pkgs.mkShell {
           buildInputs = [
-            pkgs.go
+            pkgs.go_1_17
             rustStable
             # If the project requires openssl, uncomment these
             # pkgs.pkg-config
@@ -28,9 +29,21 @@
             pkgs.yarn
             pkgs.ipfs
             self.packages.${system}.go-car
-          ];
+            pkgs.hwloc
+            pkgs.mockgen
+
+            # rust-libp2p uses prost which needs protobuf
+            pkgs.protobuf
+          ] ++ (if (system == "aarch64-darwin" || system == "x86_64-darwin") then [
+            pkgs.darwin.apple_sdk.frameworks.OpenCL
+            pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+            pkgs.darwin.apple_sdk.frameworks.Security
+          ] else [ ]);
           # If the project requires openssl, uncomment this
           # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+
+          # For lotus to build
+          # FFI_BUILD_FROM_SOURCE = 1;
         };
 
         packages.go-car =
