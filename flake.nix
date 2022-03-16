@@ -7,8 +7,9 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.rust-overlay.url = "github:oxalica/rust-overlay";
   inputs.nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
+  inputs.golang-flake.url = "github:marcopolo/golang-flake";
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay }:
+  outputs = inputs@{ self, nixpkgs, flake-utils, rust-overlay, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         overlays = [ (import rust-overlay) ];
@@ -20,7 +21,11 @@
       {
         devShell = pkgs.mkShell {
           buildInputs = [
+            # pkgs.go_1_16
             pkgs.go_1_17
+            # For go 1.18
+            # inputs.golang-flake.packages.${system}.go
+            pkgs.gopls
             rustStable
             # If the project requires openssl, uncomment these
             # pkgs.pkg-config
@@ -31,6 +36,8 @@
             self.packages.${system}.go-car
             pkgs.hwloc
             pkgs.mockgen
+
+            pkgs.awscli2
 
             # rust-libp2p uses prost which needs protobuf
             pkgs.protobuf
