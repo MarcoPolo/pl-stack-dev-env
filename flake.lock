@@ -17,11 +17,11 @@
     },
     "flake-utils_2": {
       "locked": {
-        "lastModified": 1644229661,
-        "narHash": "sha256-1YdnJAsNy69bpcjuoKdOYQX0YxZBiCYZo4Twxerqv7k=",
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "3cecb5b042f7f209c56ffd8371b2711a290ec797",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
         "type": "github"
       },
       "original": {
@@ -32,11 +32,11 @@
     },
     "flake-utils_3": {
       "locked": {
-        "lastModified": 1623875721,
-        "narHash": "sha256-A8BU7bjS5GirpAUv4QA+QnJ4CceLHkcXdRp4xITDB0s=",
+        "lastModified": 1656928814,
+        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "f7e004a55b120c02ecb6219596820fcd32ca8772",
+        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
         "type": "github"
       },
       "original": {
@@ -57,18 +57,31 @@
         "url": "https://go.dev/dl/go1.18.darwin-arm64.tar.gz"
       }
     },
+    "go_1_19-darwin-aarch64": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-HvJ6F/PbB65CoOU+BtfWEHr36J3GQqXTCG0Sa3y5TaY=",
+        "type": "tarball",
+        "url": "https://go.dev/dl/go1.19.darwin-arm64.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://go.dev/dl/go1.19.darwin-arm64.tar.gz"
+      }
+    },
     "golang-flake": {
       "inputs": {
         "flake-utils": "flake-utils_2",
         "go_1_18-darwin-aarch64": "go_1_18-darwin-aarch64",
+        "go_1_19-darwin-aarch64": "go_1_19-darwin-aarch64",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1647462080,
-        "narHash": "sha256-oHkK+mh3p6hwyKLr0AxgJGY0TaCv2dLEfr8RyCaq2hk=",
+        "lastModified": 1660843235,
+        "narHash": "sha256-8TYv/pBLyhuB6k9SJZrB7D56RXysrN5L5x2qD9CBuZI=",
         "owner": "marcopolo",
         "repo": "golang-flake",
-        "rev": "da20cadee11b128910bb191174212cfedd0827f0",
+        "rev": "0f2c4f9d58f33148724fed8c15665d29d17141b0",
         "type": "github"
       },
       "original": {
@@ -79,11 +92,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1647418766,
-        "narHash": "sha256-7ys4qJdwzSugWGM4O1RS5DHvfa3suLTpdw65uUFTp9k=",
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e39ef87d051203b345e0445a87aa97c81afbf5b2",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
         "type": "github"
       },
       "original": {
@@ -125,15 +138,16 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1628186154,
-        "narHash": "sha256-r2d0wvywFnL9z4iptztdFMhaUIAaGzrSs7kSok0PgmE=",
+        "lastModified": 1659102345,
+        "narHash": "sha256-Vbzlz254EMZvn28BhpN8JOi5EuKqnHZ3ujFYgFcSGvk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "06552b72346632b6943c8032e57e702ea12413bf",
+        "rev": "11b60e4f80d87794a2a4a8a256391b37c59a1ea7",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -153,11 +167,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1636510510,
-        "narHash": "sha256-KTvT3tOo9VpRCHGCJKOlfrPgViIm+PDnf8+x+1oNW3c=",
+        "lastModified": 1661223502,
+        "narHash": "sha256-0FGSx/zxu+rg7xpVrDCNqrao76JW1CjjGe/ZyjtRtBA=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "e9cc24d0280d9ed8b44976cef6424aca987443bc",
+        "rev": "c075bd0d8d88a6826b03ede94c66659e80c80e00",
         "type": "github"
       },
       "original": {

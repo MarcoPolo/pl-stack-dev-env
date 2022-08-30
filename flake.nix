@@ -21,56 +21,64 @@
         };
       in
       {
-        devShell = pkgs.mkShell {
-          buildInputs = [
-            # pkgs.go_1_16
-            pkgs.go_1_17
-            # For go 1.18
-            # inputs.golang-flake.packages.${system}.go
-            pkgs.gopls
-            rustStable
-            # If the project requires openssl, uncomment these
-            # pkgs.pkg-config
-            # pkgs.openssl
-            pkgs.nodejs
-            pkgs.yarn
-            pkgs.ipfs
-            self.packages.${system}.go-car
-            pkgs.hwloc
-            pkgs.mockgen
+        devShell = pkgs.mkShell
+          {
+            buildInputs = [
+              # pkgs.go_1_16
+              # pkgs.go_1_17
+              pkgs.pprof
+              # For go 1.19
+              inputs.golang-flake.packages.${system}.go_1_19
+              pkgs.gopls
+              rustStable
 
-            pkgs.awscli2
+              # filecoin-ffi
+              pkgs.rustup
+              # If the project requires openssl, uncomment these
+              pkgs.pkg-config
+              # pkgs.openssl
+              pkgs.nodejs
+              pkgs.yarn
+              pkgs.ipfs
+              self.packages.${system}.go-car
+              pkgs.hwloc
+              # Fil markets
+              pkgs.hwloc.dev
+              pkgs.mockgen
 
-            # k8s
-            pkgs.kustomize
+              pkgs.awscli2
 
-            pkgs-unstable.terraform
+              # k8s
+              pkgs.kustomize
 
-            # plantuml
-            pkgs.jdk11
-            pkgs.plantuml
+              pkgs-unstable.terraform
 
-            pkgs.pandoc
+              # plantuml
+              pkgs.jdk11
+              pkgs.plantuml
 
-            # Live markdown preview
-            pkgs.python39Packages.grip
+              pkgs.pandoc
 
-            # rust-libp2p uses prost which needs protobuf
-            pkgs.protobuf
+              # Live markdown preview
+              pkgs.python39Packages.grip
 
-            # go-libp2p uses gogo protobuf
-            self.packages.${system}.protoc-gen-gogofast
-          ] ++ (if (system == "aarch64-darwin" || system == "x86_64-darwin") then [
-            pkgs.darwin.apple_sdk.frameworks.OpenCL
-            pkgs.darwin.apple_sdk.frameworks.CoreFoundation
-            pkgs.darwin.apple_sdk.frameworks.Security
-          ] else [ ]);
-          # If the project requires openssl, uncomment this
-          # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+              # rust-libp2p uses prost which needs protobuf
+              pkgs.protobuf
 
-          # For lotus to build
-          # FFI_BUILD_FROM_SOURCE = 1;
-        };
+              # go-libp2p uses gogo protobuf
+              self.packages.${system}.protoc-gen-gogofast
+            ] ++ (if (system == "aarch64-darwin" || system == "x86_64-darwin") then [
+              pkgs.darwin.apple_sdk.frameworks.OpenCL
+              pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+              pkgs.darwin.apple_sdk.frameworks.Security
+            ] else [ ]);
+            # If the project requires openssl, uncomment this
+            # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+
+            # For lotus to build
+            # Otherwise we fetch binaries from github that are not build for macOS-arm
+            FFI_BUILD_FROM_SOURCE = 1;
+          };
 
         packages.go-car =
           pkgs.buildGoModule rec {
