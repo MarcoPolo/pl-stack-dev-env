@@ -24,6 +24,7 @@
         devShell = pkgs.mkShell
           {
             buildInputs = [
+              pkgs.clang
               # pkgs.go_1_16
               # pkgs.go_1_17
               pkgs.pprof
@@ -37,7 +38,7 @@
               # If the project requires openssl, uncomment these
               pkgs.pkg-config
               # pkgs.openssl
-              pkgs.nodejs
+              pkgs.nodejs-17_x
               pkgs.yarn
               pkgs.ipfs
               self.packages.${system}.go-car
@@ -70,7 +71,9 @@
             ] ++ (if (system == "aarch64-darwin" || system == "x86_64-darwin") then [
               pkgs.darwin.apple_sdk.frameworks.OpenCL
               pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+              pkgs.darwin.apple_sdk.frameworks.CoreServices
               pkgs.darwin.apple_sdk.frameworks.Security
+              pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
             ] else [ ]);
             # If the project requires openssl, uncomment this
             # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
