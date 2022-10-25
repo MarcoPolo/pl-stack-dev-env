@@ -24,6 +24,9 @@
         devShell = pkgs.mkShell
           {
             buildInputs = [
+              # Wasm
+              pkgs.wasm-pack
+
               pkgs.clang
               # pkgs.go_1_16
               # pkgs.go_1_17
