@@ -6,19 +6,25 @@
   description = "PL dev environment";
   inputs.flake-utils.url = "github:numtide/flake-utils";
   inputs.rust-overlay.url = "github:oxalica/rust-overlay";
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/release-22.11";
   inputs.nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-22.11-darwin";
   inputs.golang-flake.url = "github:marcopolo/golang-flake";
 
   outputs = inputs@{ self, nixpkgs, flake-utils, rust-overlay, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         overlays = [ (import rust-overlay) ];
-        pkgs = import nixpkgs { inherit system overlays; };
-        pkgs-unstable = import inputs.nixpkgs-unstable { inherit system overlays; };
-        rustStable = pkgs.rust-bin.stable.latest.default.override {
-          extensions = [ "rust-src" ];
+        os = builtins.elemAt (builtins.split "-" system) 2;
+        pkgs = import (if os == "darwin" then inputs.nixpkgs-darwin else nixpkgs) { inherit system overlays; };
+        pkgs-unstable = import inputs.nixpkgs-unstable {
+          inherit system overlays;
         };
+        rustStable = pkgs.rust-bin.stable.latest.default.override
+          {
+            extensions = [ "rust-src" ];
+            targets = [ "wasm32-unknown-unknown" ];
+          };
       in
       {
         devShell = pkgs.mkShell
@@ -26,13 +32,15 @@
             buildInputs = [
               # Wasm
               pkgs.wasm-pack
+              pkgs.wasm-bindgen-cli
+              pkgs.binaryen
 
               pkgs.clang
               # pkgs.go_1_16
               # pkgs.go_1_17
               pkgs.pprof
               # For go 1.19
-              inputs.golang-flake.packages.${system}.go_1_19
+              pkgs.go_1_19
               pkgs.gopls
               rustStable
 
@@ -40,11 +48,11 @@
               pkgs.rustup
               # If the project requires openssl, uncomment these
               pkgs.pkg-config
-              # pkgs.openssl
-              pkgs.nodejs-17_x
+              pkgs.openssl
+              pkgs.nodejs-18_x
               pkgs.yarn
               pkgs.ipfs
-              self.packages.${system}.go-car
+              # self.packages.${system}.go-car
               pkgs.hwloc
               # Fil markets
               pkgs.hwloc.dev
@@ -79,7 +87,7 @@
               pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
             ] else [ ]);
             # If the project requires openssl, uncomment this
-            # PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+            PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
 
             # For lotus to build
             # Otherwise we fetch binaries from github that are not build for macOS-arm
@@ -118,7 +126,7 @@
             vendorSha256 = "sha256-nOL2Ulo9VlOHAqJgZuHl7fGjz/WFAaWPdemplbQWcak=";
             # vendorSha256 = pkgs.lib.fakeSha256;
 
-            subPackages = [ "protoc-gen-gogofast" ];
+            subPackages = [ "protoc-gen-gogofast" "protoc-gen-gogofaster" ];
           };
       });
 }
